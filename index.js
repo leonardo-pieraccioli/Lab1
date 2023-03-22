@@ -86,13 +86,29 @@ const FilmLibrary = function (films = []) {
      * Get all the favorite films stored in the database and return (a Promise that resolves to) an array of Film objects. 
     */
     this.getFavorites = function () {
-
+        return new Promise((resolve, reject) => {
+            const sql = 'select * from films where favorite = 1';
+            this.db.all(sql, [], (err, rows) => { 
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        })
     }
     /** 
      * Get all the films watched today stored in the database and return (a Promise that resolves to) an 
      * array of Film objects*/
     this.getWatchedToday = function () {
 
+        //TODO: resolve format problem with the dayjs date string
+    
+        return new Promise((resolve, reject) => {
+            const sql = `select * from films where watchdate = '${dayjs().format('YYYY-MM-DD')}'`;
+            console.log(sql);
+            this.db.all(sql, [], (err, rows) => { 
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        })
     }
     /**
      * Get, through a parametric query, the films stored in the database whose watch date is earlier than 
@@ -154,7 +170,11 @@ async function main() {
     //let allFilms = await films.getAllFilms();
     //console.log(allFilms);
 
+    //let allFavorites = await films.getFavorites();
+    //console.log(allFavorites);
 
+    let watchedToday = await films.getWatchedToday();
+    console.log(watchedToday);
 
     films.closeDB();
 }
