@@ -73,22 +73,28 @@ const FilmLibrary = function (films = []) {
     this.storeFilmDB = function (film) {
         return new Promise ((resolve, reject) => {
             const sql = `insert into films (title, favorite, watchdate, rating) values ('${film.title}', ${film.isFavorite}, '${film.watchdate}', ${film.rating});`;
-            this.db.run(sql, (err) => {if (err) { throw err; }});
-            console.log(`"${film.title}" inserted!`)
+            this.db.run(sql, (err) => {if (err) reject(err); else resolve(film.title + 'inserted!') } );
         });
     }
-
     /**
      * Delete a movie from the database (using its ID as a reference). Once completed, print a confirmation/failure message. 
      */
-    this.deleteFilmDB = function () {
-
+    this.deleteFilmDB = function (id) {
+        return new Promise ((resolve, reject) => {
+            const sql = `delete from films where id = '${id}'`
+            console.log('Deleting ' + id);
+            this.db.run(sql, (err) => { if (err) reject(err); else resolve(id + ' eleted!')});
+        });
     }
     /**
      * Delete the watch date of all the films stored in the database. Once completed, print a confirmation/failure message.
      */
     this.deleteAllWatchdates = function () {
-
+        return new Promise ((resolve, reject) => {
+            const sql = `update films set watchdate = NULL`;
+            console.log('Deleting watchdates');
+            this.db.run(sql, (err) => { if (err) reject(err); else resolve('Watchdate deleted') });
+        });
     }
 
     //get filtered from database
@@ -223,11 +229,13 @@ async function main() {
     //let matchingTitles = await films.getMatchingTitles('s');
     //console.log(matchingTitles);
 
-    //await films.storeFilmDB(new Film('Treasure Planet', 1, dayjs('04-23-2018'), 5));
+    // await films.storeFilmDB(new Film('Treasure Planet', 1, new dayjs('2018-04-21 12:00'), 5));
     //console.log(await films.getMatchingTitles('planet'));
 
+    //await films.deleteFilmDB(10).then((err) => console.log(err));
     
-
+    //await films.deleteAllWatchdates();
+    
     films.closeDB();
 }
 
