@@ -67,8 +67,31 @@ const FilmLibrary = function (films = []) {
         this.db.close();
         console.log('Database connection ended');
     }
+    /**
+     * Store a new movie into the database. Once completed, print a confirmation/failure message.
+     */
+    this.storeFilmDB = function (film) {
+        return new Promise ((resolve, reject) => {
+            const sql = `insert into films (title, favorite, watchdate, rating) values ('${film.title}', ${film.isFavorite}, '${film.watchdate}', ${film.rating});`;
+            this.db.run(sql, (err) => {if (err) { throw err; }});
+            console.log(`"${film.title}" inserted!`)
+        });
+    }
 
-    //get from database
+    /**
+     * Delete a movie from the database (using its ID as a reference). Once completed, print a confirmation/failure message. 
+     */
+    this.deleteFilmDB = function () {
+
+    }
+    /**
+     * Delete the watch date of all the films stored in the database. Once completed, print a confirmation/failure message.
+     */
+    this.deleteAllWatchdates = function () {
+
+    }
+
+    //get filtered from database
 
     /**
      * Get all the films stored in the database and return (a Promise that resolves to) an array of Film objects
@@ -98,12 +121,8 @@ const FilmLibrary = function (films = []) {
      * Get all the films watched today stored in the database and return (a Promise that resolves to) an 
      * array of Film objects*/
     this.getWatchedToday = function () {
-
-        //TODO: resolve format problem with the dayjs date string
-    
         return new Promise((resolve, reject) => {
             const sql = `select * from films where watchdate = '${dayjs().format('YYYY-MM-DD')}'`;
-            console.log(sql);
             this.db.all(sql, [], (err, rows) => { 
                 if (err) reject(err);
                 else resolve(rows);
@@ -114,23 +133,41 @@ const FilmLibrary = function (films = []) {
      * Get, through a parametric query, the films stored in the database whose watch date is earlier than 
      * a given date received as a parameter. Return (a Promise that resolves to) an array of Film objects.
      */
-    this.getWatchedBeforeDate = function () {
-
+    this.getWatchedBeforeDate = function (date) {
+        return new Promise((resolve, reject) => {
+            const sql = `select * from films where watchdate < '${dayjs(date).format('YYYY-MM-DD')}'`;
+            this.db.all(sql, [], (err, rows) => { 
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        })
     }
     /**
      * Get, through a parametric query, the films in the database whose rating is greater than or equal to 
      * a given number received as a parameter. Return (a Promise that resolves to) an array of Film 
      * objects
      */
-    this.getRatedMoreThan = function () {
-
+    this.getRatedMoreThan = function (score) {
+        return new Promise((resolve, reject) => {
+            const sql = `select * from films where rating > ${score}`;
+            this.db.all(sql, [], (err, rows) => { 
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        })
     }
     /**
      * Get, through a parametric query, the films in the database whose title contains a given string 
      * received as a parameter. Return (a Promise that resolves to) an array of Film objects.
      */
-    this.getMatchingTitles = function () {
-
+    this.getMatchingTitles = function (string) {
+        return new Promise((resolve, reject) => {
+            const sql = `select * from films where title like '%${string}%'`;
+            this.db.all(sql, [], (err, rows) => { 
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        })
     }
 }
 
@@ -163,6 +200,7 @@ filmLibrary.getRated();
 */
 
 //test code Lab 2
+
 async function main() {
     let films = new FilmLibrary();
     films.connectToDB('films.db');
@@ -173,8 +211,22 @@ async function main() {
     //let allFavorites = await films.getFavorites();
     //console.log(allFavorites);
 
-    let watchedToday = await films.getWatchedToday();
-    console.log(watchedToday);
+    //let watchedToday = await films.getWatchedToday();
+    //console.log(watchedToday);
+
+    //let watchedBeforeDate = await films.getWatchedBeforeDate('03-20-2023');
+    //console.log(watchedBeforeDate);
+
+    //let ratedMoreThan = await films.getRatedMoreThan(3);
+    //console.log(ratedMoreThan);
+
+    //let matchingTitles = await films.getMatchingTitles('s');
+    //console.log(matchingTitles);
+
+    //await films.storeFilmDB(new Film('Treasure Planet', 1, dayjs('04-23-2018'), 5));
+    //console.log(await films.getMatchingTitles('planet'));
+
+    
 
     films.closeDB();
 }
