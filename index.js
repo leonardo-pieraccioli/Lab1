@@ -1,7 +1,8 @@
 'use strict';
 
-const dayjs = require('dayjs');
-const sqlite3 = require('sqlite3');
+//Require cannot be used when loading JS in a browser (Lab 4)
+//const dayjs = require('dayjs');
+//const sqlite3 = require('sqlite3');
 
 let currentId = 0;
 
@@ -55,8 +56,8 @@ const FilmLibrary = function (films = []) {
         shallowArray.forEach(f => console.log(`Id: ${f.id}, Title: ${f.title}, Favorite: ${f.isFavorite === undefined ? 'not specified' : f.isFavorite}, Watch date: ${f.watchDate === undefined ? 'not specified' : f.watchDate}, Score: ${f.rating === undefined ? 'not specified' : f.rating}`));
         return shallowArray;
     }
-
-    //communicating with database
+    //communicating with database 
+/*    
     this.connectToDB = function (dbName) {
         console.log('Connection to ' + dbName + '...');
         this.db = new sqlite3.Database(dbName, (err) => { if (err) throw err; });
@@ -177,36 +178,15 @@ const FilmLibrary = function (films = []) {
     }
 }
 
-//test code Lab 1
-/*
-const filmLibrary = new FilmLibrary ([
-    new Film ('Pulp Fiction', true, new dayjs('2023-03-10 12:00'), 5),
-    new Film ('21 Grams', true, new dayjs('2023-03-17 12:00'), 4),
-    new Film ('Star Wars', false)
-]);
+//test code Lab 4
+function main () {
 
-console.log('First insertion');
-filmLibrary.print();
-filmLibrary.addNewFilm(new Film ('Matrix', false));
-filmLibrary.addNewFilm(new Film ('Shrek', false, new dayjs('2023-03-21 12:00'), 3));
+}
 
-console.log('\nInserted 2 films');
-filmLibrary.print();
-
-console.log('\nSort by date');
-filmLibrary.sortByDate();
-
-filmLibrary.resetWatchedFilms();
-
-console.log('\nReset watched films');
-filmLibrary.print();
-
-console.log('\nGet rated films in descending order');
-filmLibrary.getRated();
-*/
+main ();
 
 //test code Lab 2
-
+/*
 async function main() {
     let films = new FilmLibrary();
     films.connectToDB('films.db');
@@ -240,3 +220,32 @@ async function main() {
 }
 
 main();
+*/
+
+//test code Lab 1
+/*
+const filmLibrary = new FilmLibrary ([
+    new Film ('Pulp Fiction', true, new dayjs('2023-03-10 12:00'), 5),
+    new Film ('21 Grams', true, new dayjs('2023-03-17 12:00'), 4),
+    new Film ('Star Wars', false)
+]);
+
+console.log('First insertion');
+filmLibrary.print();
+filmLibrary.addNewFilm(new Film ('Matrix', false));
+filmLibrary.addNewFilm(new Film ('Shrek', false, new dayjs('2023-03-21 12:00'), 3));
+
+console.log('\nInserted 2 films');
+filmLibrary.print();
+
+console.log('\nSort by date');
+filmLibrary.sortByDate();
+
+filmLibrary.resetWatchedFilms();
+
+console.log('\nReset watched films');
+filmLibrary.print();
+
+console.log('\nGet rated films in descending order');
+filmLibrary.getRated();
+*/
