@@ -51,8 +51,21 @@ const FilmLibrary = function (films = []) {
         shallowArray.forEach(f => console.log(`Id: ${f.id}, Title: ${f.title}, Favorite: ${f.isFavorite === undefined ? 'not specified' : f.isFavorite}, Watch date: ${f.watchDate === undefined ? 'not specified' : f.watchDate}, Score: ${f.rating === undefined ? 'not specified' : f.rating}`));
         return shallowArray;
     }
-    
-
+    this.getAll = function () {
+        return films;
+    }
+    this.getFavorites = function () {
+        return films.filter( f => f.isFavorite );
+    }
+    this.getBestRated = function () {
+        return films.filter( f => f.rating == 5 );
+    }
+    this.getSeenLastMonth = function () {
+        return films.filter( f => f.watchDate.M == dayjs().M - 1 % 12 );
+    }
+    this.getUnseen = function () {
+        return films.filter( f => f.watchDate == undefined );
+    }
 }
 
 /*  
@@ -167,6 +180,7 @@ function createFilmRow(film){
 
 function createFilmsTable (films){
     const filmsTable = document.getElementById('list-films');
+    filmsTable.innerHTML = '';
 
     for (let f of films){
         const filmRow = createFilmRow(f);
@@ -185,6 +199,8 @@ function filterAllFilms(e) {
     
     prevActive.classList.remove("active");
     thisFilter.classList.add("active");
+
+    createFilmsTable(films.array);
 }
 
 function filterFavoritesFilms(e) {
@@ -198,6 +214,8 @@ function filterFavoritesFilms(e) {
     
     prevActive.classList.remove("active");
     thisFilter.classList.add("active");
+
+    createFilmsTable(films.getFavorites());
 }
 
 function filterBestFilms(e) {
@@ -211,6 +229,8 @@ function filterBestFilms(e) {
     
     prevActive.classList.remove("active");
     thisFilter.classList.add("active");
+
+    createFilmsTable(films.getBestRated());
 }
 
 function filterSeenLastMonthFilms(e){
@@ -224,6 +244,8 @@ function filterSeenLastMonthFilms(e){
     
     prevActive.classList.remove("active");
     thisFilter.classList.add("active");
+
+    createFilmsTable(films.getSeenLastMonth());
 }
 
 function filterUnseenFilms(e){
@@ -237,6 +259,8 @@ function filterUnseenFilms(e){
     
     prevActive.classList.remove("active");
     thisFilter.classList.add("active");
+
+    createFilmsTable(films.getUnseen());
 }
 
 function enableFilters() {
@@ -253,14 +277,14 @@ function enableFilters() {
     filterUnseen.addEventListener('click', (e) => filterUnseenFilms(e));
 }
 
+let films = new FilmLibrary([
+    new Film("Pulp Fiction", true, dayjs('03-23-2021').format("YYYY-MM-DD"), 5), 
+    new Film("V per Vendetta", true, dayjs('06-23-2019').format("YYYY-MM-DD"), 4),
+    new Film("Bad Boys", false, undefined, 3)
+]);
+
 //test code Lab 4
 function main () {
-    let films = new FilmLibrary([
-            new Film("Pulp Fiction", true, dayjs('03-23-2021').format("YYYY-MM-DD"), 5), 
-            new Film("V per Vendetta", true, dayjs('06-23-2019').format("YYYY-MM-DD"), 4),
-            new Film("Bad Boys", false, undefined, 3)
-        ]);
-
     createFilmsTable(films.array);
     enableFilters();
 }
