@@ -61,7 +61,7 @@ const FilmLibrary = function (films = []) {
         return films.filter( f => f.rating == 5 );
     }
     this.getSeenLastMonth = function () {
-        return films.filter( f => f.watchDate.M == dayjs().M - 1 % 12 );
+        return films.filter( f => f.watchDate != undefined && f.watchDate.M == dayjs().month() - 1);
     }
     this.getUnseen = function () {
         return films.filter( f => f.watchDate == undefined );
@@ -122,7 +122,7 @@ function createFilmRow(film){
     inputCheckbox.className = "custom-control-input";
     inputCheckbox.id = "check-f" + film.id;
     if ( film.isFavorite )
-        inputCheckbox.checked = "";
+        inputCheckbox.setAttribute("checked", "");
     favoriteCheckbox.appendChild(inputCheckbox);
 
     //<label class="custom-control-label" for="check-f1">Favorite</label>
