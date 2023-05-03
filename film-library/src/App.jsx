@@ -7,6 +7,7 @@ import './App.css'
 import NavComp from './components/NavbarComponent'
 import Sidebar from './components/SidebarComponent'
 import FilmList from './components/FilmListComponent'
+import FilmForm from './components/FilmFormComponent';
 import FILMS from './films';
 
 import { Row, Col, Button } from 'react-bootstrap'
@@ -16,6 +17,7 @@ import { useState } from 'react';
 function App() {
 
   const [selectedFilter, setSelectedFilter] = useState('filter-all');
+  const [showForm, setShowForm] = useState(false);
 
   const filters = [
     {label: 'All', id: "filter-all", filterFunction: () => true},
@@ -35,7 +37,11 @@ function App() {
         </Col>
         <Col className='below-nav'>
           <FilmList films={FILMS.filter(filters.find( (f) => f.id == selectedFilter ).filterFunction)} selectedFilter={filters.find( (f) => f.id == selectedFilter).label}/>
-          <Button variant="primary" size="lg" className="fixed-right-bottom"> + </Button>
+          {showForm ? 
+            <FilmForm
+              cancel={ () => setShowForm(false)}
+            /> 
+            : <Button variant="primary" size="lg" className="fixed-right-bottom" onClick={ () => {setShowForm(true)}}> + </Button>}
         </Col>
       </Row>
     </>
