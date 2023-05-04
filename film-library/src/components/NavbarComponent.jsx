@@ -3,9 +3,9 @@ import { Nav, Navbar, Container, Form, Image, Button } from "react-bootstrap";
 
 function NavComp (props) {
     return (
-        <Navbar bg="primary" variant="dark">
+        <Navbar bg="dark" variant="dark">
             <Container fluid className="justify-content-between">
-                <Navbar.Brand href="#"> <i className="bi bi-collection-play navbar-icon-size"/> Film Library</Navbar.Brand>
+                <Navbar.Brand href="#" className="navbar-header"> <i className="bi bi-collection-play navbar-icon-size"/> Film Library</Navbar.Brand>
                 <NavSearchBar></NavSearchBar>
                 <NavProfile></NavProfile>
             </Container>
@@ -23,7 +23,7 @@ function NavSearchBar (props) {
 
 function NavProfile (props) {
     return (
-        <Button>
+        <Button className="btn btn-circle">
             <i className="bi bi-person-circle navbar-icon-size"></i>
         </Button>
     );

@@ -2,8 +2,12 @@
     min-height: 100vh;
 }
 
+.navbar-header{
+    margin-left: 1rem;
+}
+
 .favorite {
-    color: red;
+    color: #0275d8;
 }
 
 /* Icon size */
@@ -39,4 +43,8 @@
 
 .form-button-add{
     margin-right: 0.5rem;
+}
+
+.btn-circle{
+    border-radius: 50%;
 }

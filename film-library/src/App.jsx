@@ -7,7 +7,6 @@ import './App.css'
 import NavComp from './components/NavbarComponent'
 import Sidebar from './components/SidebarComponent'
 import FilmList from './components/FilmListComponent'
-import FilmForm from './components/FilmFormComponent';
 import FILMS from './films';
 
 import { Row, Col, Button } from 'react-bootstrap'
@@ -17,7 +16,7 @@ import { useState } from 'react';
 function App() {
 
   const [selectedFilter, setSelectedFilter] = useState('filter-all');
-  const [showForm, setShowForm] = useState(false);
+  const [films, setFilms] = useState(FILMS);
 
   const filters = [
     {label: 'All', id: "filter-all", filterFunction: () => true},
@@ -27,21 +26,37 @@ function App() {
     {label: 'Unseen', id: 'filter-unseen', filterFunction: (f) => f.watchDate === undefined},
   ]
 
+  const addFilm = (film) => {
+    setFilms((oldFilms) => [ ...oldFilms, film ]);
+  }
+
+  const updateFilm = (film) => {
+    setFilms ((oldFilms) => oldFilms.map(
+      (f) => {
+        if (f.id === film.id) {
+          return {"id": film.id, "title": film.title, "favorite": film.favorite, "watchDate": film.watchDate, "rating": film.rating};
+        } else {
+          return f;
+        }
+      }
+    ));
+  }
+
   return (
     <>
       <NavComp/>
 
       <Row className='vh-100'>
-        <Col md={4} xl={3} className='below-nav bg-light'>
+        <Col md={3} xl={4} className='below-nav bg-light'>
           <Sidebar filters={filters} selected={selectedFilter} onSelect={setSelectedFilter} ></Sidebar>
         </Col>
         <Col className='below-nav'>
-          <FilmList films={FILMS.filter(filters.find( (f) => f.id == selectedFilter ).filterFunction)} selectedFilter={filters.find( (f) => f.id == selectedFilter).label}/>
-          {showForm ? 
-            <FilmForm
-              cancel={ () => setShowForm(false)}
-            /> 
-            : <Button variant="primary" size="lg" className="fixed-right-bottom" onClick={ () => {setShowForm(true)}}> + </Button>}
+          <FilmList 
+            films={films.filter(filters.find( (f) => f.id == selectedFilter ).filterFunction)} 
+            selectedFilter={filters.find( (f) => f.id == selectedFilter).label}
+            addFilm={addFilm}
+            updateFilm={updateFilm}
+            />
         </Col>
       </Row>
     </>
