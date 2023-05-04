@@ -23,7 +23,7 @@ function NavSearchBar (props) {
 
 function NavProfile (props) {
     return (
-        <Button className="btn btn-circle">
+        <Button className="btn btn-circle ms-2">
             <i className="bi bi-person-circle navbar-icon-size"></i>
         </Button>
     );

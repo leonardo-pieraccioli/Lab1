@@ -9,7 +9,7 @@ import Sidebar from './components/SidebarComponent'
 import FilmList from './components/FilmListComponent'
 import FILMS from './films';
 
-import { Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Container } from 'react-bootstrap'
 
 import { useState } from 'react';
 
@@ -43,11 +43,12 @@ function App() {
   }
 
   return (
-    <>
-      <NavComp/>
-
-      <Row className='vh-100'>
-        <Col md={3} xl={4} className='below-nav bg-light'>
+    <Row>
+      <Row>
+        <NavComp/>
+      </Row>
+      <Row className='h-100'>
+        <Col md={3} className='below-nav bg-light'>
           <Sidebar filters={filters} selected={selectedFilter} onSelect={setSelectedFilter} ></Sidebar>
         </Col>
         <Col className='below-nav'>
@@ -59,7 +60,7 @@ function App() {
             />
         </Col>
       </Row>
-    </>
+    </Row>
   )
 }
 
