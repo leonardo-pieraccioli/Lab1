@@ -8,7 +8,7 @@ function FilmForm (props) {
 
     const [id, setId] = useState(props.film ? props.film.id : props.lastId + 1);
     const [title, setTitle] = useState(props.film ? props.film.title : '');
-    const [watchDate, setWatchDate] = useState(props.film ? props.film.watchDate : false);
+    const [watchDate, setWatchDate] = useState(props.film ? dayjs(props.film.watchDate).format('YYYY-MM-DD') : undefined);
     const [rating, setRating] = useState(props.film ? props.film.rating : undefined);
     const [favorite, setFavorite] = useState(props.film ? props.film.favorite : false);
 

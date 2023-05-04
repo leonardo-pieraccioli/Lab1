@@ -17,28 +17,32 @@ function FilmList (props) {
         <>
             <h1>Filter: <span className="notbold">{props.selectedFilter}</span></h1>
             <Table striped className="below-h1">
-                <tbody>
-                { props.films.map( (f) => { 
-                    return (<FilmRow 
-                                film={f} 
-                                key={f.id} 
-                                setEditableFilm={setEditableFilm}
-                                setShowForm={setShowForm}/> ) 
-                } ) }
+                <tbody> 
+                    {   
+                    props.films.map( (f) => { 
+                    return (
+                        <FilmRow 
+                            film={f} 
+                            key={f.id} 
+                            setEditableFilm={setEditableFilm}
+                            setShowForm={setShowForm}/> 
+                    )}) 
+                }
                 </tbody>
-            </Table>
-            {showForm ? 
-            <FilmForm
-              key={editableFilm ? editableFilm.id : -1 }
-              cancel={ () => setShowForm(false)}
-              film={editableFilm}
-              addFilm={props.addFilm}
-              lastId={calcLastId()}
-            /> 
-            : <Button 
-                variant="primary" size="lg" className="  add-button fixed-right-bottom" 
-                onClick={ () => {setShowForm(true); setEditableFilm()}} > 
-            <i className="bi bi-plus-circle"></i> </Button>}
+            </Table> {
+                showForm ? 
+                    <FilmForm
+                        key={editableFilm ? editableFilm.id : -1 }
+                        film={editableFilm}
+                        addFilm={props.addFilm}
+                        updateFilm={props.updateFilm}
+                        lastId={calcLastId()}
+                        cancel={ () => setShowForm(false)}/> 
+                    : <Button 
+                        variant="primary" size="lg" className="add-button fixed-right-bottom" 
+                        onClick={ () => {setShowForm(true); setEditableFilm()}} > 
+                        <i className="bi bi-plus-circle"></i> 
+                    </Button>}
         </>
     );
 }
@@ -49,17 +53,13 @@ function FilmRow (props) {
         <>
             <tr>
                 <td><span className={f.favorite ? 'favorite' : ''}>{f.title}</span></td>
+                <td><Form.Check type="checkbox" label="Favorite" defaultChecked={f.favorite ? true : false}/></td>
+                <td>{ f.watchDate ? f.watchDate.format('MMMM DD, YYYY') : '' }</td>
+                <td>{ f.rating ? <Rating rating={f.rating}/> : '' }</td>
                 <td>
-                    <Form.Check type="checkbox" label="Favorite" defaultChecked={f.favorite ? true : false}/>
-                </td>
-                <td>
-                    { f.watchDate ? f.watchDate.format('MMMM DD, YYYY') : '' }
-                </td>
-                <td>
-                    { f.rating ? <Rating rating={f.rating}/> : '' }
-                </td>
-                <td>
-                    <Button variant="dark" onClick={ () => {  props.setShowForm(true); props.setEditableFilm(f); } }> <i className="bi bi-pencil-square"></i> </Button>    
+                    <Button variant="dark" onClick={ () => {  props.setShowForm(true); props.setEditableFilm(f); } }> 
+                        <i className="bi bi-pencil-square"></i> 
+                    </Button>
                 </td> 
             </tr> 
         </> 
