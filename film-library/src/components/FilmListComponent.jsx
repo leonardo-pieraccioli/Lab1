@@ -9,7 +9,6 @@ function FilmList (props) {
     const [showForm, setShowForm] = useState(false);
     const [editableFilm, setEditableFilm] = useState();
     
-
     const calcLastId = () => {
         return Math.max(...props.films.map( f => f.id));
     }
@@ -37,8 +36,9 @@ function FilmList (props) {
               lastId={calcLastId()}
             /> 
             : <Button 
-                variant="primary" size="lg" className="fixed-right-bottom" 
-                onClick={ () => {setShowForm(true); setEditableFilm()}} > + </Button>}
+                variant="primary" size="lg" className="  add-button fixed-right-bottom" 
+                onClick={ () => {setShowForm(true); setEditableFilm()}} > 
+            <i className="bi bi-plus-circle"></i> </Button>}
         </>
     );
 }

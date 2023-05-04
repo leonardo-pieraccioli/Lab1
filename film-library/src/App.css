@@ -38,7 +38,7 @@
     bottom: 0;
     z-index: 1030;
     margin: 0 1.5rem 1.5rem 0;
-    border-radius: 50%;
+    border-radius: 40%;
 }
 
 .form-button-add{
@@ -47,4 +47,13 @@
 
 .btn-circle{
     border-radius: 50%;
+}
+
+.add-button {    
+    width: 50px;
+    height: 50px;
+    padding: 0px 0px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
 }
