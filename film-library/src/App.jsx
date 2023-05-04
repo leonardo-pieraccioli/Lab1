@@ -10,7 +10,7 @@ import FilmList from './components/FilmListComponent'
 import FILMS from './films';
 
 import { Row, Col, Container } from 'react-bootstrap'
-
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { useState } from 'react';
 
 function App() {
@@ -43,24 +43,34 @@ function App() {
   }
 
   return (
-    <Row>
-      <Row>
-        <NavComp/>
-      </Row>
-      <Row className='h-100'>
-        <Col md={3} className='below-nav bg-light'>
-          <Sidebar filters={filters} selected={selectedFilter} onSelect={setSelectedFilter} ></Sidebar>
-        </Col>
-        <Col className='below-nav'>
-          <FilmList 
-            films={films.filter(filters.find( (f) => f.id == selectedFilter ).filterFunction)} 
-            selectedFilter={filters.find( (f) => f.id == selectedFilter).label}
-            addFilm={addFilm}
-            updateFilm={updateFilm}
-            />
-        </Col>
-      </Row>
-    </Row>
+
+    <BrowserRouter>
+      <Routes>
+      <Route element={
+            <>
+              <NavComp/>
+              <Container fluid as={Row} className="mt-3 h-100">
+                <Col md={3} className='below-nav bg-light'>
+                  <Sidebar filters={filters} selected={selectedFilter} onSelect={setSelectedFilter} ></Sidebar>
+                </Col>
+                <Col className='below-nav'><Outlet/></Col>
+              </Container>
+            </>} >
+
+        <Route index
+          element= {<FilmList 
+                films={films.filter(filters.find( (f) => f.id == selectedFilter ).filterFunction)} 
+                selectedFilter={filters.find( (f) => f.id == selectedFilter).label}
+                addFilm={addFilm}
+                updateFilm={updateFilm}
+                /> }>
+        </Route>
+
+      </Route>
+
+      </Routes>
+    </BrowserRouter>
+          
   )
 }
 

@@ -19,7 +19,7 @@ function Sidebar (props) {
                     );
                 })
             }
-        </ListGroup>    
+        </ListGroup>
     );
 }
 
